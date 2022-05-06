@@ -1,0 +1,35 @@
+services: 
+  web:
+    container_name: never-red-app
+    build:
+    ports:
+      - 9000:9000
+    depends_on:
+      db: 
+        condition: service_healthy
+    networks:
+     - front-tier
+     - back-tier
+
+  db:
+    image: postgres
+    container_name: never-red-db
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/etc/data
+    networks: 
+      - back-tier
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "${POSTGRES_HOST}",  "-p", "${POSTGRES_PORT}"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  db-data:
+
+networks:
+  - front-tier: {}
+  - back-tier: {}
