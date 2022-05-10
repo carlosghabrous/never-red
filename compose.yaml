@@ -1,25 +1,31 @@
 services: 
-  # db:
-  #   image: postgres
-  #   container_name: never-red-db
-  #   environment: 
-  #     POSTGRES_USER: root
-  #     POSTGRES_PASSWORD: root-secret-password
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - 5433:${POSTGRES_PORT}
-  #   volumes:
-  #     - db-data:/etc/data
-  #   healthcheck:
-  #     test: ["CMD", "pg_isready", "-h", "${POSTGRES_HOST}",  "-p", "${POSTGRES_PORT}"]
-  #     interval: 1s
-  #     timeout: 30s
-  #     retries: 5
-  #   command:
-  #     - "postgres"
-  #     - "-c"
-  #     - "log_statement=all"
+  db:
+    image: postgres
+    container_name: never-red-db
+    environment: 
+      NEVER-RED_DB_NAME: ${NEVER-RED_DB_NAME}
+
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root-secret-password
+
+      NEVER-RED_ADMIN_USER: ${NEVER-RED_USER}
+      NEVER-RED_ADMIN_PWD: ${NEVER-RED_PWD}
+
+    env_file:
+      - .env
+    ports:
+      - 5433:${POSTGRES_PORT}
+    volumes:
+      - db-data:/etc/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "${POSTGRES_HOST}",  "-p", "${POSTGRES_PORT}"]
+      interval: 1s
+      timeout: 30s
+      retries: 5
+    command:
+      - "postgres"
+      - "-c"
+      - "log_statement=all"
 
   web:
     container_name: never-red-app
@@ -28,9 +34,9 @@ services:
     build: .
     ports:
       - 8000:9000
-    # depends_on:
-    #   db: 
-    #     condition: service_healthy
+    depends_on:
+      db: 
+        condition: service_healthy
 
 volumes:
   db-data:
