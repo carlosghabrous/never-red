@@ -20,6 +20,7 @@ services:
       - 5434:${POSTGRES_PORT}
     volumes:
       - db-data:/var/lib/postgresql/data
+      - ./postgres:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "pg_isready", "-h", "${POSTGRES_HOST}",  "-p", "${POSTGRES_PORT}"]
       interval: 1s
