@@ -3,16 +3,16 @@ services:
     image: postgres
     container_name: never-red-db
     environment: 
-      NEVER-RED_DB_NAME: ${NEVER-RED_DB_NAME}
+      NEVER_RED_DB_NAME: ${NEVER_RED_DB_NAME}
 
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root-secret-password
 
-      NEVER-RED_ADMIN_USER: ${NEVER-RED_ADMIN_USER}
-      NEVER-RED_ADMIN_PWD: ${NEVER-RED_ADMIN_PWD}
+      NEVER_RED_ADMIN_USER: ${NEVER_RED_ADMIN_USER}
+      NEVER_RED_ADMIN_PWD: ${NEVER_RED_ADMIN_PWD}
 
-      NEVER-RED_USER: ${NEVER-RED_USER}
-      NEVER-RED_PWD: ${NEVER-RED_PWD}
+      NEVER_RED_USER: ${NEVER_RED_USER}
+      NEVER_RED_PWD: ${NEVER_RED_PWD}
 
     env_file:
       - .env
