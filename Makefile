@@ -1,4 +1,4 @@
-.PHONY: usage up down down-clean-db
+.PHONY: usage up down down-clean-db test
 
 DC_RUN=docker-compose run --rm web $(1)
 
@@ -19,7 +19,7 @@ down-clean-db:
 	docker-compose down --volumes
 
 test:
-	$(call DC-RUN, go test -v $(if $(ARGS),$(ARGS),./...))
+	$(call DC_RUN, go test -v $(if $(ARGS),$(ARGS),./...))
 
 up: 
 	docker-compose up
