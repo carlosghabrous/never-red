@@ -1,4 +1,4 @@
-.PHONY: usage up down down-clean-db test
+.PHONY: usage build coverage down down-clean-db test up
 
 DC_RUN=docker-compose run --rm web $(1)
 
@@ -11,6 +11,10 @@ usage:
 
 build: 
 	./scripts/composer-build.sh
+
+coverage:
+	PKG_LIST=$(go list ./... | grep -v /vendor/ | tr '\n' ' ')
+	$(call DC_RUN, go test -covermode=count -coverprofile coverage $(PKG_LIST) && go tool cover -func=coverage)
 
 down: 
 	docker-compose down
