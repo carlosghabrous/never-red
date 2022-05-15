@@ -15,6 +15,7 @@ Because with help of this web app the hope is that my bank account will never be
 This application uses: 
 - gorilla/mux: HTTP router
 - GORM: ORM 
+- go-app: https://github.com/maxence-charriere/go-app
 
 
 # Installation
