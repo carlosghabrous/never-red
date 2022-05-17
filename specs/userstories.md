@@ -7,3 +7,6 @@ date,amount,currency,type(expense | income),concept,category. These will be know
     - time series of electricity and gas bills
     - time series of expenses, income and savings (income - expenses)
     - expenses percentiles, i. e., return top 10 expenses in the current month (or arbitrary period)
+
+- user can define savings goal, and track it down
+- user can define budgets for all expenses categories, and track them down
