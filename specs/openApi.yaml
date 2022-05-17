@@ -1,5 +1,78 @@
 openapi: 3.1.0
 info: 
   title: Never-red app HTTP API
+  description: |
+    This API allows to upload expenses/income data from CSV files to store them in a persistent data storage. 
+    It also allows querying the permanent storage to get different information from the raw data. 
   version: 0.0.1
-paths: {}
+paths:
+  /csv-import:
+    put:
+      summary: Import CSV data
+      description: | 
+        Imports expenses and income data from a CSV file in a predefined format
+        (date,amount,currency,category,subcategory) for persistent storage.
+      responses:
+        "200":
+          description: "OK"
+                
+  /expenses:
+    get:
+      summary: Get expenses
+      description: Retrieves the full list of expenses from persistent storage
+      responses:
+        "200":
+          description: "OK"
+    put:
+      summary: Adds an individual expense
+      description: Adds an expense entry for persistent storage
+      responses:
+        "200":
+          description: "OK"
+  /incomes:
+    get:
+      summary: Get incomes
+      description: Retrieves the full list of incomes from persistent storage
+      responses: 
+        "200":
+          description: "OK"
+    put: 
+      summary: Adds an individual income
+      description: Adds an income entry for persistent storage
+      responses:
+        "200":
+          description: "OK"
+  /resources/time-series/expenses:
+    get:
+      summary: Gets the expenses time-series
+      description: Retrieves time series data on expenses
+      parameters:
+        - $ref: "#/components/parameters/from"
+        - $ref: "#/components/parameters/to"
+        - $ref: "#/components/parameters/category"
+        - $ref: "#/components/parameters/currency"
+      responses: 
+        "200":
+          description: "OK"
+  /resources/time-series/incomes:
+      summary: Gets the incomes time-series
+      description: Retrieves time series data on incomes
+      parameters:
+        - $ref: "#/components/parameters/from"
+        - $ref: "#/components/parameters/to"
+        - $ref: "#/components/parameters/currency"
+      responses: 
+        "200":
+          description: "OK"
+  /resources/time-series/savings:
+      summary: Gets the savings time series
+      description: Retrieves the savings (income-expenses) time series
+      parameters:
+        - $ref: "#/components/parameters/from"
+        - $ref: "#/components/parameters/to"
+  /resources/expenses/percentile/{number}:
+    get:
+      summary: Gets percentile data
+      description: Retrieves percentile on expenses data 
+  
+  
