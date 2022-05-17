@@ -2,20 +2,59 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
+
+var mux *http.ServeMux
 
 func helloHandler(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "hello there!\n")
 }
 
-// TODO: Could be done via map iteration for all handlers
+func csvImportHandler(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "csv import!\n")
+}
+
+func expensesHandler(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "expenses handler!\n")
+}
+
+func incomesHandler(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "incomes handler!\n")
+}
+
+func timeSeriesExpensesHandler(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "timeSeriesExpenses handler!\n")
+}
+
+func timeSeriesIncomesHandler(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "timeSeriesIncomes handler!\n")
+}
+
+func timeSeriesSavingsHandler(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "timeSeriesSavings handler!\n")
+}
+
+func resourcesExpensesPercentileHandler(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "resourcesExpensesPercentile handler!\n")
+}
+
 func loadHandlers() {
-	http.HandleFunc("/hello", helloHandler)
+	mux = http.NewServeMux()
+	mux.HandleFunc("/hello", helloHandler)
+	mux.HandleFunc("/csv-import", csvImportHandler)
+	mux.HandleFunc("/expenses", expensesHandler)
+	mux.HandleFunc("/incomes", incomesHandler)
+	mux.HandleFunc("/resources/time-series/expenses", timeSeriesExpensesHandler)
+	mux.HandleFunc("/resources/time-series/incomes", timeSeriesIncomesHandler)
+	mux.HandleFunc("/resources/time-series/savings", timeSeriesSavingsHandler)
+	mux.HandleFunc("/resources/expenses/percentile/", resourcesExpensesPercentileHandler)
 }
 
 func Start() error {
 	loadHandlers()
 
-	return http.ListenAndServe(":9000", nil)
+	log.Println("Listening...")
+	return http.ListenAndServe(":9000", mux)
 }
