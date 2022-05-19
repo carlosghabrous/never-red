@@ -12,6 +12,13 @@ paths:
       description: | 
         Imports expenses and income data from a CSV file in a predefined format
         (date,amount,currency,category,subcategory) for persistent storage.
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: csv_file
+          type: file
+          description: CSV file to upload
       responses:
         "200":
           description: "OK"
