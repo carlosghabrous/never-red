@@ -8,6 +8,12 @@ import (
 
 var mux *http.ServeMux
 
+// swagger:route GET /hello App says hello
+//
+// Makes the app say hello
+//
+// responses:
+//	200: OK
 func helloHandler(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "hello there!\n")
 }

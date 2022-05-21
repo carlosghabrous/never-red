@@ -1,4 +1,4 @@
-.PHONY: usage build coverage down down-clean-db test up
+.PHONY: usage build coverage docs docs-serve down down-clean-db test up
 
 DC_RUN=docker-compose run --rm web $(1)
 
@@ -15,6 +15,12 @@ build:
 coverage:
 	PKG_LIST=$(go list ./... | grep -v /vendor/ | tr '\n' ' ')
 	$(call DC_RUN, go test -covermode=count -coverprofile coverage $(PKG_LIST) && go tool cover -func=coverage)
+
+docs:
+	swagger generate spec -o ./swagger/swagger.json --scan-models
+
+docs-serve:
+	swagger serve ./swagger/swagger.json
 
 down: 
 	docker-compose down

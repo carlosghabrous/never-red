@@ -1,4 +1,20 @@
 {
   "swagger": "2.0",
-  "paths": {}
+  "paths": {
+    "/hello": {
+      "get": {
+        "description": "Makes the app say hello",
+        "tags": [
+          "App",
+          "says"
+        ],
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/OK"
+          }
+        }
+      }
+    }
+  }
 }
