@@ -1,6 +1,8 @@
 FROM golang:1.17
 
 WORKDIR /usr/src/app
+ENV GOPATH=/go
+ENV PATH=$GOPATH/bin:$PATH
 
 COPY go.mod go.su[m] ./
 RUN go mod download && go mod verify
