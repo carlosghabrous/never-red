@@ -1,13 +1,18 @@
-.PHONY: usage build coverage docs docs-serve down down-clean-db test up
+.PHONY: usage bash build coverage docs docs-serve down down-clean-db test up
 
 DC_RUN=docker-compose run --rm web $(1)
 
 usage: 
 	@echo "Targets:"
+	@echo "- bash			-----> 		Opens a bash shell in the app container"
 	@echo "- build			-----> 		Builds services listed in the compose file"
+	@coverage "- coverage"  ----->		Calls go test with coverage tools"
 	@echo "- down 			-----> 		Stops the never-red application, supporting services and removes their containers"
 	@echo "- down-clean-db 	-----> 		Same as down, but also removes data volumes"
 	@echo "- up 			-----> 		Runs the never-red application and supporting services"
+
+bash: 
+	$(call DC_RUN, bash)
 
 build: 
 	./scripts/composer-build.sh
@@ -17,10 +22,10 @@ coverage:
 	$(call DC_RUN, go test -covermode=count -coverprofile coverage $(PKG_LIST) && go tool cover -func=coverage)
 
 docs:
-	swagger generate spec -o ./swagger/swagger.json --scan-models
+	$(call DC_RUN, swagger generate spec -o ./swagger/swagger.json --scan-models)
 
 docs-serve:
-	swagger serve ./swagger/swagger.json
+	$(call DC_RUN, swagger serve ./swagger/swagger.json)
 
 down: 
 	docker-compose down
