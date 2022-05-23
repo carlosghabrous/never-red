@@ -20,7 +20,7 @@ paths:
           type: file
           description: CSV file to upload
       responses:
-        "200":
+        "201":
           description: "OK"
                 
   /expenses:
