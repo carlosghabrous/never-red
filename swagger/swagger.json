@@ -1,19 +1,26 @@
 {
   "swagger": "2.0",
   "paths": {
-    "/hello": {
-      "get": {
-        "description": "Makes the app say hello",
+    "/csv-import": {
+      "post": {
+        "description": "Imports data from a CSV file in a predefined format",
         "tags": [
-          "App",
-          "says"
+          "Import",
+          "CSV"
         ],
-        "operationId": "hello",
+        "operationId": "file",
         "responses": {
-          "200": {
+          "201": {
             "$ref": "#/responses/OK"
           }
         }
+      }
+    },
+    "/hello": {
+      "get": {
+        "description": "Makes the app say hello",
+        "operationId": "Hello",
+        "responses": {}
       }
     }
   }
