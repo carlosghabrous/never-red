@@ -42,15 +42,15 @@ services:
       db: 
         condition: service_healthy
 
-  docs:
-    image: swaggerapi/swagger-ui
-    container_name: never-red-docs
-    volumes:
-      - ./swagger:/usr/share/nginx/html/doc
-    ports:
-      - 8001:8080
-    environment:
-      API_URL: doc/swagger.json
+  # docs:
+  #   image: swaggerapi/swagger-ui
+  #   container_name: never-red-docs
+  #   volumes:
+  #     - ./swagger:/usr/share/nginx/html/doc
+  #   ports:
+  #     - 8001:8080
+  #   environment:
+  #     API_URL: doc/swagger.json
 
 volumes:
   db-data:
