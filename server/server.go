@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 var mux *http.ServeMux
@@ -64,21 +67,33 @@ func resourcesExpensesPercentileHandler(w http.ResponseWriter, req *http.Request
 	fmt.Fprintf(w, "resourcesExpensesPercentile handler!\n")
 }
 
+func loadDotEnv() {
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+}
+
 func loadHandlers() {
 	mux = http.NewServeMux()
 	mux.HandleFunc("/hello", helloHandler)
-	mux.HandleFunc("/csv-import", csvImportHandler)
-	mux.HandleFunc("/expenses", expensesHandler)
-	mux.HandleFunc("/incomes", incomesHandler)
-	mux.HandleFunc("/resources/time-series/expenses", timeSeriesExpensesHandler)
-	mux.HandleFunc("/resources/time-series/incomes", timeSeriesIncomesHandler)
-	mux.HandleFunc("/resources/time-series/savings", timeSeriesSavingsHandler)
-	mux.HandleFunc("/resources/expenses/percentile/", resourcesExpensesPercentileHandler)
+	// mux.HandleFunc("/csv-import", csvImportHandler)
+	// mux.HandleFunc("/expenses", expensesHandler)
+	// mux.HandleFunc("/incomes", incomesHandler)
+	// mux.HandleFunc("/resources/time-series/expenses", timeSeriesExpensesHandler)
+	// mux.HandleFunc("/resources/time-series/incomes", timeSeriesIncomesHandler)
+	// mux.HandleFunc("/resources/time-series/savings", timeSeriesSavingsHandler)
+	// mux.HandleFunc("/resources/expenses/percentile/", resourcesExpensesPercentileHandler)
 }
 
 func Start() error {
+	loadDotEnv()
+	neverRedPort := os.Getenv("NEVER_RED_PORT")
+
 	loadHandlers()
 
 	log.Println("Listening...")
-	return http.ListenAndServe(":9000", mux)
+
+	return http.ListenAndServe(":"+neverRedPort, mux)
 }
