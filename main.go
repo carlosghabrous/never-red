@@ -9,6 +9,6 @@ import (
 func main() {
 
 	if err := server.Start(); err != nil {
-		log.Fatal("Could not start server!")
+		log.Fatalf("Could not start server (%s)", err)
 	}
 }
