@@ -5,13 +5,12 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
 
 // Stores the environment variables stored in the .env file
 var neverRedEnv map[string]string
-
-var mux *http.ServeMux
 
 // swagger:route GET /hello Hello
 //
@@ -69,37 +68,35 @@ func resourcesExpensesPercentileHandler(w http.ResponseWriter, req *http.Request
 	fmt.Fprintf(w, "resourcesExpensesPercentile handler!\n")
 }
 
-func loadDotEnv() error {
+func loadDotEnv() {
 	var err error
 	neverRedEnv, err = godotenv.Read(".env")
 
 	if err != nil {
-		log.Fatal("Error loading .env file")
-		return err
+		log.Fatalf("Error loading .env file %s", err)
 	}
-
-	return nil
 }
 
-func loadHandlers() {
-	mux = http.NewServeMux()
-	mux.HandleFunc("/hello", helloHandler)
-	// mux.HandleFunc("/csv-import", csvImportHandler)
+func loadHandlers() *mux.Router {
+	router := mux.NewRouter()
+	router.HandleFunc("/hello", helloHandler).Methods("GET")
 	// mux.HandleFunc("/expenses", expensesHandler)
 	// mux.HandleFunc("/incomes", incomesHandler)
 	// mux.HandleFunc("/resources/time-series/expenses", timeSeriesExpensesHandler)
 	// mux.HandleFunc("/resources/time-series/incomes", timeSeriesIncomesHandler)
 	// mux.HandleFunc("/resources/time-series/savings", timeSeriesSavingsHandler)
 	// mux.HandleFunc("/resources/expenses/percentile/", resourcesExpensesPercentileHandler)
+	return router
 }
 
 func Start() error {
 	loadDotEnv()
-	neverRedPort := neverRedEnv["NEVER_RED_PORT"]
+	neverRedPort, found := neverRedEnv["NEVER_RED_PORT"]
 
-	loadHandlers()
+	if !found {
+		log.Fatal("Variable 'NEVER_RED_PORT' not defined in .env file")
+	}
 
-	log.Println("Listening...")
-
-	return http.ListenAndServe(":"+neverRedPort, mux)
+	log.Printf("Initiating server on port %s", neverRedPort)
+	return http.ListenAndServe(":"+neverRedPort, loadHandlers())
 }
