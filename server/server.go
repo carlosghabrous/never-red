@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/joho/godotenv"
 )
+
+// Stores the environment variables stored in the .env file
+var neverRedEnv map[string]string
 
 var mux *http.ServeMux
 
@@ -67,12 +69,16 @@ func resourcesExpensesPercentileHandler(w http.ResponseWriter, req *http.Request
 	fmt.Fprintf(w, "resourcesExpensesPercentile handler!\n")
 }
 
-func loadDotEnv() {
-	err := godotenv.Load(".env")
+func loadDotEnv() error {
+	var err error
+	neverRedEnv, err = godotenv.Read(".env")
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
+		return err
 	}
+
+	return nil
 }
 
 func loadHandlers() {
@@ -89,7 +95,7 @@ func loadHandlers() {
 
 func Start() error {
 	loadDotEnv()
-	neverRedPort := os.Getenv("NEVER_RED_PORT")
+	neverRedPort := neverRedEnv["NEVER_RED_PORT"]
 
 	loadHandlers()
 
