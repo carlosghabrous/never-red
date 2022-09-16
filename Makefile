@@ -24,7 +24,7 @@ coverage:
 	$(call DC_RUN, go test -covermode=count -coverprofile coverage $(PKG_LIST) && go tool cover -func=coverage)
 
 docs:
-	swagger generate spec -o ./swagger/swagger.json --scan-models
+	@echo "TBD"
 
 down: 
 	docker-compose down
