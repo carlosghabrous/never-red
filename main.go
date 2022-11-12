@@ -1,14 +1,7 @@
 package main
 
-import (
-	"log"
-
-	"github.com/carlosghabrous/never-red/server"
-)
+import "net/http"
 
 func main() {
-
-	if err := server.Start(); err != nil {
-		log.Fatalf("Could not start server (%s)", err)
-	}
+	http.ListenAndServe("", nil)
 }
