@@ -2,15 +2,19 @@ FROM golang:1.17 as go_base
 
 ENV \
     GOPATH=/go \
-    PATH=$GOPATH/bin:$PATH
+    APP_ENV=/app \
+    PATH=$GOPATH/bin:$APP_ENV:$PATH
 
 FROM go_base as never_red_base
-WORKDIR /usr/src/app
 
-COPY go.mod go.su[m] ./
+# Create app directory
+RUN mkdir /app
+WORKDIR /app
+
+ADD src/* .
+
 RUN go mod download && go mod verify
 
-COPY . .
-RUN go build -v -o /usr/local/bin ./...
-EXPOSE 9000
-CMD ["never-red"]
+RUN go build -v -o never-red .
+EXPOSE 8080
+CMD ["/app/never-red"]
