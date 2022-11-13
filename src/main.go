@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"reflect"
+	"runtime"
 )
 
 func hello(writer http.ResponseWriter, request *http.Request) {
@@ -12,6 +14,14 @@ func hello(writer http.ResponseWriter, request *http.Request) {
 
 func world(writer http.ResponseWriter, request *http.Request) {
 	fmt.Fprintf(writer, "World!")
+}
+
+func logWrapper(handleFunc http.HandlerFunc) http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		name := runtime.FuncForPC(reflect.ValueOf(handleFunc).Pointer()).Name()
+		fmt.Printf("Calling handler %s\n", name)
+		handleFunc(writer, request)
+	}
 }
 
 // type Config map[string]string
@@ -33,8 +43,8 @@ func main() {
 	serverAddr := "127.0.0.1" + ":" + "8080"
 	server := http.Server{Addr: serverAddr, Handler: nil}
 
-	http.HandleFunc("/hello", hello)
-	http.HandleFunc("/world", world)
+	http.HandleFunc("/hello", logWrapper(hello))
+	http.HandleFunc("/world", logWrapper(world))
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Could not start server %e", err)
