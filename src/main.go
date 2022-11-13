@@ -6,15 +6,11 @@ import (
 	"net/http"
 )
 
-type HelloHandler struct{}
-
-func (handler *HelloHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+func hello(writer http.ResponseWriter, request *http.Request) {
 	fmt.Fprintf(writer, "Hello!")
 }
 
-type WorldHandler struct{}
-
-func (handler *WorldHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+func world(writer http.ResponseWriter, request *http.Request) {
 	fmt.Fprintf(writer, "World!")
 }
 
@@ -37,10 +33,8 @@ func main() {
 	serverAddr := "127.0.0.1" + ":" + "8080"
 	server := http.Server{Addr: serverAddr, Handler: nil}
 
-	helloHandler := HelloHandler{}
-	worldHandler := WorldHandler{}
-	http.Handle("/hello", &helloHandler)
-	http.Handle("/world", &worldHandler)
+	http.HandleFunc("/hello", hello)
+	http.HandleFunc("/world", world)
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Could not start server %e", err)
