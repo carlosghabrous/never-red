@@ -1,9 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 )
+
+type MyHandler struct{}
+
+func (handler *MyHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	fmt.Fprintf(writer, "Hello!")
+}
 
 // type Config map[string]string
 
@@ -18,11 +25,12 @@ import (
 // }
 
 // TODO: load configuration
-// TODO: have the option of starting a TLS server?
+// TODO: have the command line option of starting a TLS server?
 
 func main() {
+	soleHandler := MyHandler{}
 	serverAddr := "127.0.0.1" + ":" + "8080"
-	server := http.Server{Addr: serverAddr, Handler: nil}
+	server := http.Server{Addr: serverAddr, Handler: &soleHandler}
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Could not start server %e", err)
