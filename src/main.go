@@ -1,50 +1,22 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"reflect"
-	"runtime"
 )
 
-func hello(writer http.ResponseWriter, request *http.Request) {
-	fmt.Fprintf(writer, "Hello!")
-}
-
-func world(writer http.ResponseWriter, request *http.Request) {
-	fmt.Fprintf(writer, "World!")
-}
-
-func logWrapper(handleFunc http.HandlerFunc) http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {
-		name := runtime.FuncForPC(reflect.ValueOf(handleFunc).Pointer()).Name()
-		fmt.Printf("Calling handler %s\n", name)
-		handleFunc(writer, request)
+func dataImport(w http.ResponseWriter, r *http.Request) {
+	if !validMethod("POST", r.Method, w) {
+		return
 	}
+	//TODO: keep processing
 }
-
-// type Config map[string]string
-
-// var neverRedConfig Config
-
-// func init() {
-// 	neverRedConfig, err := godotenv.Read()
-// 	if err != nil {
-// 		log.Fatal("Could not read .env file")
-// 	}
-// 	// fmt.Println(neverRedConfig["NEVER_RED_HOST"], neverRedConfig["NEVER_RED_PORT"])
-// }
-
-// TODO: load configuration
-// TODO: have the command line option of starting a TLS server?
 
 func main() {
 	serverAddr := "127.0.0.1" + ":" + "8080"
 	server := http.Server{Addr: serverAddr, Handler: nil}
 
-	http.HandleFunc("/hello", logWrapper(hello))
-	http.HandleFunc("/world", logWrapper(world))
+	http.HandleFunc("/import", dataImport)
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Could not start server %e", err)
