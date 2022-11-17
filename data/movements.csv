@@ -1,0 +1,5 @@
+# DATE,TYPE,COMMERCE,CATEGORY,CURRENCY,AMOUNT
+2022.11.01,Expense,Mercadona,Food,EUR,28.64
+2022.11.01,Income,PEAT,Employer,EUR,300
+2022.11.02,Income,Zurich,Insurance,EUR,200
+2022.11.04,Expense,Zalando,Clothes,EUR,34.59

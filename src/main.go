@@ -5,18 +5,14 @@ import (
 	"net/http"
 )
 
-func dataImport(w http.ResponseWriter, r *http.Request) {
-	if !validMethod("POST", r.Method, w) {
-		return
-	}
-	//TODO: keep processing
-}
+var mux *http.ServeMux
 
 func main() {
-	serverAddr := "127.0.0.1" + ":" + "8080"
-	server := http.Server{Addr: serverAddr, Handler: nil}
+	mux = http.NewServeMux()
+	mux.HandleFunc("/import", dataImport)
 
-	http.HandleFunc("/import", dataImport)
+	serverAddr := "127.0.0.1" + ":" + "8080"
+	server := http.Server{Addr: serverAddr, Handler: mux}
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Could not start server %e", err)
