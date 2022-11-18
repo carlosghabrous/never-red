@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/carlosghabrous/never-red/pkg/models"
 )
 
 const MaxFileBytesInMemory = 1024
 
 func (a *api) dataImport(w http.ResponseWriter, r *http.Request) {
-	if !validMethod("POST", r.Method, w) {
+	if !validMethod(http.MethodPost, r.Method, w) {
 		return
 	}
 
@@ -31,13 +33,13 @@ func (a *api) dataImport(w http.ResponseWriter, r *http.Request) {
 	//TODO: parse file and dump content to DB
 }
 
-func getMovements(w http.ResponseWriter, r *http.Request) {
-	if !validMethod("GET", r.Method, w) {
+func (a *api) getMovements(w http.ResponseWriter, r *http.Request) {
+	if !validMethod(http.MethodGet, r.Method, w) {
 		return
 	}
 
-	movements := json.Number(1) // this should come from the DB...
-	var err error = nil         // ...and the error as well
+	movements := []models.Movement{} // this should come from the DB...
+	var err error = nil              // ...and the error as well
 
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
