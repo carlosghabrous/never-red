@@ -14,7 +14,7 @@ func New() Server {
 	theApi := &api{}
 
 	mux := http.NewServeMux()
-	http.HandleFunc("/import", dataImport)
+	mux.HandleFunc("/import", theApi.dataImport)
 
 	theApi.router = mux
 	return theApi

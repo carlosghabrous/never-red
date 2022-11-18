@@ -8,7 +8,7 @@ import (
 
 const MaxFileBytesInMemory = 1024
 
-func dataImport(w http.ResponseWriter, r *http.Request) {
+func (a *api) dataImport(w http.ResponseWriter, r *http.Request) {
 	if !validMethod("POST", r.Method, w) {
 		return
 	}
