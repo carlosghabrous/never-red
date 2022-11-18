@@ -15,6 +15,7 @@ func New() Server {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/import", theApi.dataImport)
+	mux.HandleFunc("/movements", theApi.getMovements)
 
 	theApi.router = mux
 	return theApi

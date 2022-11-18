@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -28,4 +29,21 @@ func (a *api) dataImport(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, data)
 
 	//TODO: parse file and dump content to DB
+}
+
+func getMovements(w http.ResponseWriter, r *http.Request) {
+	if !validMethod("GET", r.Method, w) {
+		return
+	}
+
+	movements := json.Number(1) // this should come from the DB...
+	var err error = nil         // ...and the error as well
+
+	w.Header().Set("Content-Type", "application/json")
+	if err != nil {
+		fmt.Println("Something happened while fetching data")
+		return
+	}
+
+	json.NewEncoder(w).Encode(movements)
 }
