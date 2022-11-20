@@ -11,7 +11,7 @@ import (
 
 const MaxFileBytesInMemory = 1024
 
-func (a *api) dataImport(w http.ResponseWriter, r *http.Request) {
+func (a *App) dataImport(w http.ResponseWriter, r *http.Request) {
 	if !validMethod(http.MethodPost, r.Method, w) {
 		return
 	}
@@ -33,7 +33,7 @@ func (a *api) dataImport(w http.ResponseWriter, r *http.Request) {
 	//TODO: parse file and dump content to DB
 }
 
-func (a *api) getMovements(w http.ResponseWriter, r *http.Request) {
+func (a *App) getMovements(w http.ResponseWriter, r *http.Request) {
 	if !validMethod(http.MethodGet, r.Method, w) {
 		return
 	}
