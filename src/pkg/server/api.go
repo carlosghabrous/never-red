@@ -6,12 +6,15 @@ import (
 	"net/http"
 )
 
+// TODO: interface for db connection too?
+// TODO : add a "global" logger to the App struct?
 type App struct {
 	router http.Handler // interface
 	db     *sql.DB
 }
 
-var app App
+// Variable representing the web app and its resources
+var app *App
 
 func New() (*App, error) {
 	app := &App{}
