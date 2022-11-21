@@ -25,6 +25,7 @@ func TestMain(m *testing.M) {
 
 	code := m.Run()
 
+	//TODO: tear down
 	os.Exit(code)
 }
 
@@ -37,6 +38,16 @@ func TestDataImport(t *testing.T) {
 
 	if respBody := response.Body.String(); respBody != "[]" {
 		t.Errorf("Expected and empty array. Got %s\n", respBody)
+	}
+}
+
+func TestGetMovements(t *testing.T) {
+	req, _ := http.NewRequest(http.MethodGet, "/movements", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	if respBody := response.Body.String(); respBody != "[]\n" {
+		t.Errorf("Expected empty array; got %s\n", respBody)
 	}
 }
 
