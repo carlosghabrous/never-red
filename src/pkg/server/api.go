@@ -32,7 +32,7 @@ func New() (*App, error) {
 func initAppRouter() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/import", app.dataImport)
-	mux.HandleFunc("/movements", app.dataImport)
+	mux.HandleFunc("/movements", app.getMovements)
 
 	return mux
 }
