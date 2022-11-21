@@ -1,7 +1,7 @@
 package models
 
 type Movement struct {
-	ID       string `json:"ID"`
+	ID       int    `json:"ID"`
 	Date     string `json:"date"`
 	Type     string `json:"type"`
 	Commerce string `json:"commerce"`
