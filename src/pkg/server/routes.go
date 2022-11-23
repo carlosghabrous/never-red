@@ -19,16 +19,17 @@ func (a *App) dataImport(w http.ResponseWriter, r *http.Request) {
 	r.ParseMultipartForm(MaxFileBytesInMemory)
 	fileHeader := r.MultipartForm.File["csv"][0]
 	file, err := fileHeader.Open()
+
 	if err != nil {
 		w.WriteHeader(http.StatusConflict)
-		// return?
+		return
 	}
-	data, err := ioutil.ReadAll(file)
+
+	_, err = ioutil.ReadAll(file)
 	if err != nil {
 		w.WriteHeader(http.StatusConflict)
-		// return?
+		return
 	}
-	fmt.Fprintln(w, data)
 
 	//TODO: parse file and dump content to DB
 }
