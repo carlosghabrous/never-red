@@ -35,10 +35,6 @@ func TestDataImport(t *testing.T) {
 	req := getMultipartRequest()
 	response := executeRequest(req)
 	checkResponseCode(t, http.StatusOK, response.Code)
-
-	if respBody := response.Body.String(); respBody != "[]" {
-		t.Errorf("Expected and empty array. Got %s\n", respBody)
-	}
 }
 
 func TestGetMovements(t *testing.T) {
