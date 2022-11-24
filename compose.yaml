@@ -33,15 +33,14 @@ services:
 
   web:
     container_name: never-red-app
+    build: ./
     env_file:
       - .env
-    build: .
     ports:
       - 8082:8080
     depends_on:
       db: 
         condition: service_healthy
-
 
 volumes:
   db-data:
