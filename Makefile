@@ -27,7 +27,7 @@ docs:
 	@echo "TBD"
 
 down: 
-	docker-compose down
+	docker-compose down --remove-orphans
 
 down-clean-db:
 	docker-compose down --volumes
