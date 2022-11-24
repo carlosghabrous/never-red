@@ -19,7 +19,6 @@ services:
     ports:
       - 5434:${POSTGRES_PORT}
     volumes:
-      - db-data:/var/lib/postgresql/data
       - ./postgres:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "pg_isready", "-h", "${POSTGRES_HOST}",  "-p", "${POSTGRES_PORT}"]
@@ -38,6 +37,8 @@ services:
       - .env
     ports:
       - 8082:8080
+    volumes:
+      - ./data:/app
     depends_on:
       db: 
         condition: service_healthy
