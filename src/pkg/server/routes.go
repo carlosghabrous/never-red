@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/carlosghabrous/never-red/pkg/models"
+	"github.com/carlosghabrous/never-red/src/pkg/models"
 )
 
 const MaxFileBytesInMemory = 1024

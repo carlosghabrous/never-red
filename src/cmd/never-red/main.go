@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/carlosghabrous/never-red/pkg/server"
+	"github.com/carlosghabrous/never-red/src/pkg/server"
 )
 
 //TODO: get server data from environment file or similar
