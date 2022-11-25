@@ -19,6 +19,11 @@ bash:
 build: 
 	./scripts/composer-build.sh
 
+checks: build \
+	vet \
+	test \
+	lint \
+
 coverage:
 	PKG_LIST=$(go list ./... | grep -v /vendor/ | tr '\n' ' ')
 	$(call DC_RUN, go test -covermode=count -coverprofile coverage $(PKG_LIST) && go tool cover -func=coverage)
@@ -32,8 +37,14 @@ down:
 down-clean-db:
 	docker-compose down --volumes
 
+lint:
+	$(call DC_RUN, golint -set_exit_status ./...)
+
 test:
 	$(call DC_RUN, go test -v $(if $(ARGS),$(ARGS),./...))
 
-up: 
+up:
 	docker-compose up
+
+vet:
+	$(call DC_RUN, go vet ./...)
