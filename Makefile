@@ -21,11 +21,11 @@ build:
 
 checks: build \
 	vet \
-	test
+	test \
+	coverage
 
 coverage:
-	PKG_LIST=$(go list ./... | grep -v /vendor/ | tr '\n' ' ')
-	$(call DC_RUN, go test -covermode=count -coverprofile coverage $(PKG_LIST) && go tool cover -func=coverage)
+	$(call DC_RUN, go list ./... | grep -v /vendor/ | tr '\n' ' ' | go test ./... -covermode=count -coverprofile coverage $(PKG_LIST) && go tool cover -func=coverage)
 
 docs:
 	@echo "TBD"
