@@ -21,8 +21,7 @@ build:
 
 checks: build \
 	vet \
-	test \
-	lint \
+	test
 
 coverage:
 	PKG_LIST=$(go list ./... | grep -v /vendor/ | tr '\n' ' ')
