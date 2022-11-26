@@ -37,9 +37,6 @@ down:
 down-clean-db:
 	docker-compose down --volumes
 
-lint:
-	$(call DC_RUN, golint -set_exit_status ./...)
-
 test:
 	$(call DC_RUN, go test -v $(if $(ARGS),$(ARGS),./...))
 
