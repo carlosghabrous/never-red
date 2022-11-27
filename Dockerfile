@@ -1,4 +1,4 @@
-FROM golang:1.17 as go_base
+FROM golang:1.18 as go_base
 
 # Create app directory
 WORKDIR /app
