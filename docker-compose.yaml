@@ -16,6 +16,15 @@ services:
     image: postgres:latest 
     ports: 
       - "5432:5432"
+    environment:
+      POSTGRES_USER: ${NEVER_RED_ADMIN_USER}
+      POSTGRES_PASSWORD: ${NEVER_RED_ADMIN_PWD}
+      POSTGRES_DB: ${NEVER_RED_DB_NAME}
+
+      NEVER_RED_USER: ${NEVER_RED_USER}
+      NEVER_RED_PWD: ${NEVER_RED_PWD}
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
     networks:
       - never-red-backend
   
