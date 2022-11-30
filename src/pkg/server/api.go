@@ -47,12 +47,22 @@ func initAppRouter() http.Handler {
 
 func initDb() (*sql.DB, error) {
 	//TODO: get DB credentials from .env file
-	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", "never_red_user", "super_secret_never_red_pwd", "never_red")
+	const (
+		user     = "never_red_user"
+		password = "super_secret_never_red_pwd"
+		dbname   = "never_red"
+		host     = "localhost"
+		port     = 5434
+		sslmode  = "disable"
+	)
+
+	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%d sslmode=%s", user, password, dbname, host, port, sslmode)
 	dbConn, err := sql.Open("postgres", connectionString)
 
 	if err != nil {
 		return nil, err
 	}
+	defer dbConn.Close()
 
 	err = dbConn.Ping()
 	if err != nil {
