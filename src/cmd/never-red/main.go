@@ -10,6 +10,7 @@ import (
 //TODO: get server data from environment file or similar
 func main() {
 	server, err := server.New()
+
 	if err != nil {
 		log.Fatal("Could not start app!")
 	}
