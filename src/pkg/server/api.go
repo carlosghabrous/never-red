@@ -3,6 +3,7 @@ package server
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -18,15 +19,20 @@ var app *App
 
 func New() (*App, error) {
 	app := &App{}
-	app.router = initAppRouter()
+	app.initialize()
 
-	var err error
-	app.db, err = initDb()
+	return app, nil
+}
+
+func (app *App) initialize() {
+	app.router = initAppRouter()
+	dbInstance, err := initDb()
 
 	if err != nil {
-		return nil, fmt.Errorf("Could not connect to the DB: %w", err)
+		log.Fatal(err)
 	}
-	return app, nil
+
+	app.db = dbInstance
 }
 
 func initAppRouter() http.Handler {
@@ -38,10 +44,26 @@ func initAppRouter() http.Handler {
 }
 
 func initDb() (*sql.DB, error) {
-	//TODO: get DB credentials from somewhere
-	return nil, nil
+	//TODO: get DB credentials from .env file
+	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", "never_red_user", "super_secret_never_red_pwd", "never_red")
+	dbConn, err := sql.Open("postgres", connectionString)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = dbConn.Ping()
+	if err != nil {
+		return nil, err
+	}
+
+	return dbConn, nil
 }
 
 func (app *App) Router() http.Handler {
 	return app.router
+}
+
+func (app *App) DB() *sql.DB {
+	return app.db
 }
