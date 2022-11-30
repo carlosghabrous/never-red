@@ -15,7 +15,7 @@ services:
     container_name: never-red-db
     image: postgres:latest 
     ports: 
-      - "5434:5434"
+      - "5434:5432"
     environment:
       POSTGRES_USER: ${NEVER_RED_ADMIN_USER}
       POSTGRES_PASSWORD: ${NEVER_RED_ADMIN_PWD}
