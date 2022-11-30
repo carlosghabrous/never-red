@@ -10,5 +10,5 @@ RUN go mod download && go mod verify
 COPY src/ ./src
 RUN go build -v -o . ./...
 
-EXPOSE 8080
+EXPOSE 8082
 CMD ["./never-red"]

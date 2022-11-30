@@ -4,7 +4,7 @@ services:
     container_name: never-red-web
     build: .
     ports:
-      - "8080:8080"
+      - "8082:8082"
     depends_on:
       - db
     volumes:
@@ -15,7 +15,7 @@ services:
     container_name: never-red-db
     image: postgres:latest 
     ports: 
-      - "5432:5432"
+      - "5434:5434"
     environment:
       POSTGRES_USER: ${NEVER_RED_ADMIN_USER}
       POSTGRES_PASSWORD: ${NEVER_RED_ADMIN_PWD}
