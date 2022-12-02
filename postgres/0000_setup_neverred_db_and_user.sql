@@ -1,5 +1,5 @@
 -- Stop execution if error is found
-\set ON_ERROR_STOP on
+\set ON_ERROR_STOP off
 
 -- get env vars
 \set NEVER_RED_DB_NAME `echo $POSTGRES_DB`

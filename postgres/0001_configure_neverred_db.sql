@@ -1,6 +1,6 @@
-\set ON_ERROR_STOP on
+\set ON_ERROR_STOP off
 
-\set NEVER_RED_DB_NAME `echo $NEVER_RED_DB_NAME`
+\set NEVER_RED_DB_NAME `echo $POSTGRES_DB`
 \c :NEVER_RED_DB_NAME
 
 --
