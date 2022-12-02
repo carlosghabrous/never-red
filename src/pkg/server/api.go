@@ -51,12 +51,12 @@ func initDb() (*sql.DB, error) {
 		user     = "never_red_user"
 		password = "super_secret_never_red_pwd"
 		dbname   = "never_red"
-		host     = "localhost"
+		host     = "127.0.0.1"
 		port     = 5432
 		sslmode  = "disable"
 	)
 
-	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%d sslmode=%s", user, password, dbname, host, port, sslmode)
+	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s", host, user, password, dbname, port, sslmode)
 	dbConn, err := sql.Open("postgres", connectionString)
 
 	if err != nil {
@@ -66,7 +66,7 @@ func initDb() (*sql.DB, error) {
 
 	err = dbConn.Ping()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("can't connect to DB %v\n", err)
 	}
 
 	return dbConn, nil
