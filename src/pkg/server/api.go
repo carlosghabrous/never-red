@@ -52,7 +52,7 @@ func initDb() (*sql.DB, error) {
 		password = "super_secret_never_red_pwd"
 		dbname   = "never_red"
 		host     = "localhost"
-		port     = 5434
+		port     = 5432
 		sslmode  = "disable"
 	)
 
