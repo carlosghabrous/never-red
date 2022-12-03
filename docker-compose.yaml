@@ -1,4 +1,4 @@
-version: "2"
+version: "3.8"
 services:
   web:
     container_name: never-red-web
@@ -9,8 +9,12 @@ services:
       - db
     volumes:
       - ./data:/app/data
-    networks:
-      - never-red-backend
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "${POSTGRES_HOST}",  "-p", "${POSTGRES_PORT}"]
+      interval: 1s
+      timeout: 3s
+      retries: 90
+    
   db:
     container_name: never-red-db
     image: postgres:latest 
@@ -25,8 +29,4 @@ services:
       NEVER_RED_PWD: ${NEVER_RED_PWD}
     volumes:
       - ./postgres:/docker-entrypoint-initdb.d
-    networks:
-      - never-red-backend
-  
-networks:
-  never-red-backend:
+      

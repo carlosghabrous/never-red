@@ -51,7 +51,7 @@ func initDb() (*sql.DB, error) {
 		user     = "never_red_user"
 		password = "super_secret_never_red_pwd"
 		dbname   = "never_red"
-		host     = "127.0.0.1"
+		host     = "0.0.0.0"
 		port     = 5432
 		sslmode  = "disable"
 	)
