@@ -14,6 +14,7 @@ import (
 type App struct {
 	router http.Handler // interface
 	db     *sql.DB
+	logger *log.Logger
 }
 
 // Variable representing the web app and its resources
@@ -27,14 +28,17 @@ func New() (*App, error) {
 }
 
 func (app *App) initialize() {
+	app.logger = log.Default()
+
 	app.router = initAppRouter()
 	dbInstance, err := initDb()
 
 	if err != nil {
-		log.Fatal(err)
+		app.logger.Fatal(err)
 	}
 
 	app.db = dbInstance
+	app.logger.Println("App correctly initialized!")
 }
 
 func initAppRouter() http.Handler {
@@ -51,7 +55,7 @@ func initDb() (*sql.DB, error) {
 		user     = "never_red_user"
 		password = "super_secret_never_red_pwd"
 		dbname   = "never_red"
-		host     = "0.0.0.0"
+		host     = "never-red-db"
 		port     = 5432
 		sslmode  = "disable"
 	)
