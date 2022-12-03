@@ -9,14 +9,9 @@ services:
       - db
     volumes:
       - ./data:/app/data
-    healthcheck:
-      test: ["CMD", "pg_isready", "-h", "${POSTGRES_HOST}",  "-p", "${POSTGRES_PORT}"]
-      interval: 1s
-      timeout: 3s
-      retries: 90
     
   db:
-    container_name: never-red-db
+    container_name: ${POSTGRES_HOST}
     image: postgres:latest 
     ports: 
       - "5434:5432"
@@ -29,4 +24,13 @@ services:
       NEVER_RED_PWD: ${NEVER_RED_PWD}
     volumes:
       - ./postgres:/docker-entrypoint-initdb.d
-      
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "${POSTGRES_HOST}",  "-p", "${POSTGRES_PORT}"]
+      interval: 1s
+      timeout: 3s
+      retries: 90
+    command:
+      - "postgres"
+      - "-c"
+      - "log_statement=all"
+
