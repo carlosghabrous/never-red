@@ -37,7 +37,7 @@ down-clean-db:
 	docker-compose down --volumes
 
 test:
-	$(call DC_RUN, go test -v $(if $(ARGS),$(ARGS),./...))
+	$(call DC_RUN, go test -v --count=1 $(if $(ARGS),$(ARGS),./...))
 
 up:
 	docker-compose up
