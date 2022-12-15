@@ -32,14 +32,16 @@ jobs:
         go get -u golang.org/x/lint/golint
 
     - name: Build
-      run: go build -v ./...
+      run: make build
+      # run: go build -v ./...
       continue-on-error: false
 
     # Run vet & lint on the code
     - name: Run vet & lint
-      run: |
-        go vet ./...
+      run: make vet
+      # run: go vet ./...
       continue-on-error: false
       
     - name: Test
-      run: go test -v ./...
+      run: make test
+      # run: go test -v ./...
