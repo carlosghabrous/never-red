@@ -11,16 +11,19 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// TODO: interface for db connection too?
-// TODO : add a "global" logger to the App struct?
-
-type neverRedEnv map[string]string
+type neverRedEnv struct {
+	db_host string
+	db_user string
+	db_pwd  string
+	db_name string
+	db_port string
+}
 
 type App struct {
 	router http.Handler // interface
 	db     *sql.DB
 	logger *log.Logger
-	env    neverRedEnv
+	env    *neverRedEnv
 }
 
 // Variable representing the web app and its resources
@@ -58,10 +61,17 @@ func (app *App) initialize() {
 	app.logger.Println("App correctly initialized!")
 }
 
-func initAppEnv() (neverRedEnv, error) {
+func initAppEnv() (*neverRedEnv, error) {
 	cwd, _ := os.Getwd()
 	log.Printf("current directory is %s\n", cwd)
-	appEnv, err := godotenv.Read("/app/.env")
+	envMap, err := godotenv.Read("/app/.env")
+
+	appEnv := &neverRedEnv{
+		db_host: envMap["POSTGRES_HOST"],
+		db_port: envMap["POSTGRES_PORT"],
+		db_user: envMap["NEVER_RED_USER"],
+		db_pwd:  envMap["NEVER_RED_PWD"],
+		db_name: envMap["NEVER_RED_DB_NAME"]}
 	return appEnv, err
 }
 
@@ -73,8 +83,8 @@ func initAppRouter() http.Handler {
 	return mux
 }
 
-func initDb(env neverRedEnv) (*sql.DB, error) {
-	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", env["POSTGRES_HOST"], env["NEVER_RED_USER"], env["NEVER_RED_PWD"], env["NEVER_RED_DB_NAME"], env["POSTGRES_PORT"], "disable")
+func initDb(env *neverRedEnv) (*sql.DB, error) {
+	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", env.db_host, env.db_user, env.db_pwd, env.db_name, env.db_port, "disable")
 	dbConn, err := sql.Open("postgres", connectionString)
 
 	if err != nil {
@@ -99,5 +109,5 @@ func (app *App) DB() *sql.DB {
 }
 
 func (app *App) Port() string {
-	return app.env["NEVER_RED_PORT"]
+	return app.env.db_port
 }
