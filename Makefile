@@ -25,7 +25,7 @@ checks: build \
 	coverage
 
 coverage:
-	$(call DC_RUN, go list ./... | grep -v /vendor/ | tr '\n' ' ' | go test ./... -covermode=count -coverprofile coverage $(PKG_LIST) && go tool cover -func=coverage)
+	$(call DC_RUN, go test --count=1 -coverprofile=cover.out ./...)
 
 docs:
 	@echo "TBD"
