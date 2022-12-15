@@ -5,16 +5,21 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 // TODO: interface for db connection too?
 // TODO : add a "global" logger to the App struct?
+
+type neverRedEnv map[string]string
 type App struct {
 	router http.Handler // interface
 	db     *sql.DB
 	logger *log.Logger
+	env    neverRedEnv
 }
 
 // Variable representing the web app and its resources
@@ -28,10 +33,21 @@ func New() (*App, error) {
 }
 
 func (app *App) initialize() {
+	// logger
 	app.logger = log.Default()
 
+	// environment
+	env, err := initAppEnv()
+	if err != nil {
+		app.logger.Fatal(err)
+	}
+	app.env = env
+
+	// multiplexer
 	app.router = initAppRouter()
-	dbInstance, err := initDb()
+
+	// database
+	dbInstance, err := initDb(env)
 
 	if err != nil {
 		app.logger.Fatal(err)
@@ -39,6 +55,13 @@ func (app *App) initialize() {
 
 	app.db = dbInstance
 	app.logger.Println("App correctly initialized!")
+}
+
+func initAppEnv() (neverRedEnv, error) {
+	cwd, _ := os.Getwd()
+	log.Printf("current directory is %s\n", cwd)
+	appEnv, err := godotenv.Read(".env")
+	return appEnv, err
 }
 
 func initAppRouter() http.Handler {
@@ -49,18 +72,8 @@ func initAppRouter() http.Handler {
 	return mux
 }
 
-func initDb() (*sql.DB, error) {
-	//TODO: get DB credentials from .env file
-	const (
-		user     = "never_red_user"
-		password = "super_secret_never_red_pwd"
-		dbname   = "never_red"
-		host     = "never-red-db"
-		port     = 5432
-		sslmode  = "disable"
-	)
-
-	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s", host, user, password, dbname, port, sslmode)
+func initDb(env neverRedEnv) (*sql.DB, error) {
+	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", env["POSTGRES_HOST"], env["NEVER_RED_USER"], env["NEVER_RED_PWD"], env["NEVER_RED_DB_NAME"], env["POSTGRES_PORT"], "disable")
 	dbConn, err := sql.Open("postgres", connectionString)
 
 	if err != nil {
@@ -82,4 +95,8 @@ func (app *App) Router() http.Handler {
 
 func (app *App) DB() *sql.DB {
 	return app.db
+}
+
+func (app *App) Port() string {
+	return app.env["NEVER_RED_PORT"]
 }

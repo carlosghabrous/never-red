@@ -15,5 +15,5 @@ func main() {
 		log.Fatal("Could not start app!")
 	}
 
-	log.Fatal(http.ListenAndServe(":8080", server.Router()))
+	log.Fatal(http.ListenAndServe(":"+server.Port(), server.Router()))
 }
