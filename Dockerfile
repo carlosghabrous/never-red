@@ -7,6 +7,7 @@ COPY go.sum .
 
 RUN go mod download && go mod verify
 
+COPY .env .env
 COPY src/ ./src
 RUN go build -v -o . ./...
 
