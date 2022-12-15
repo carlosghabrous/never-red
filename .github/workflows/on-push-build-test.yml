@@ -7,7 +7,7 @@ on:
     branches: ["**"]
 
 jobs:
-  # The "build" workflow
+  # The "build" job
   build:
 
     # The runner type
@@ -33,15 +33,14 @@ jobs:
 
     - name: Build
       run: make build
-      # run: go build -v ./...
       continue-on-error: false
 
     # Run vet & lint on the code
     - name: Run vet & lint
       run: make vet
-      # run: go vet ./...
       continue-on-error: false
-      
+
     - name: Test
       run: make test
-      # run: go test -v ./...
+      continue-on-error: true
+      
