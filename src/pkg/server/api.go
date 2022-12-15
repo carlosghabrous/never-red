@@ -15,6 +15,7 @@ import (
 // TODO : add a "global" logger to the App struct?
 
 type neverRedEnv map[string]string
+
 type App struct {
 	router http.Handler // interface
 	db     *sql.DB
@@ -60,7 +61,7 @@ func (app *App) initialize() {
 func initAppEnv() (neverRedEnv, error) {
 	cwd, _ := os.Getwd()
 	log.Printf("current directory is %s\n", cwd)
-	appEnv, err := godotenv.Read(".env")
+	appEnv, err := godotenv.Read("/app/.env")
 	return appEnv, err
 }
 
