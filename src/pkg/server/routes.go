@@ -50,3 +50,8 @@ func (a *App) getMovements(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(movements)
 }
+
+func (a *App) hello(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode("hello")
+}

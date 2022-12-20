@@ -12,11 +12,12 @@ import (
 )
 
 type neverRedEnv struct {
-	db_host string
-	db_user string
-	db_pwd  string
-	db_name string
-	db_port string
+	dbHost  string
+	dbUser  string
+	dbPwd   string
+	dbName  string
+	dbPort  string
+	appPort string
 }
 
 type App struct {
@@ -67,11 +68,12 @@ func initAppEnv() (*neverRedEnv, error) {
 	envMap, err := godotenv.Read("/app/.env")
 
 	appEnv := &neverRedEnv{
-		db_host: envMap["POSTGRES_HOST"],
-		db_port: envMap["POSTGRES_PORT"],
-		db_user: envMap["NEVER_RED_USER"],
-		db_pwd:  envMap["NEVER_RED_PWD"],
-		db_name: envMap["NEVER_RED_DB_NAME"]}
+		dbHost:  envMap["POSTGRES_HOST"],
+		dbPort:  envMap["POSTGRES_PORT"],
+		dbUser:  envMap["NEVER_RED_USER"],
+		dbPwd:   envMap["NEVER_RED_PWD"],
+		dbName:  envMap["NEVER_RED_DB_NAME"],
+		appPort: envMap["NEVER_RED_PORT"]}
 	return appEnv, err
 }
 
@@ -79,12 +81,13 @@ func initAppRouter() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/import", app.dataImport)
 	mux.HandleFunc("/movements", app.getMovements)
+	mux.HandleFunc("/hello", app.hello)
 
 	return mux
 }
 
 func initDb(env *neverRedEnv) (*sql.DB, error) {
-	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", env.db_host, env.db_user, env.db_pwd, env.db_name, env.db_port, "disable")
+	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", env.dbHost, env.dbUser, env.dbPwd, env.dbName, env.dbPort, "disable")
 	dbConn, err := sql.Open("postgres", connectionString)
 
 	if err != nil {
@@ -109,5 +112,6 @@ func (app *App) DB() *sql.DB {
 }
 
 func (app *App) Port() string {
-	return app.env.db_port
+	app.logger.Printf("Listening on port %s\n", app.env.appPort)
+	return app.env.appPort
 }
