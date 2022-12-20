@@ -21,7 +21,7 @@ type neverRedEnv struct {
 
 type App struct {
 	router http.Handler // interface
-	db     *sql.DB
+	db     dbDriver
 	logger *log.Logger
 	env    *neverRedEnv
 }
@@ -57,7 +57,7 @@ func (app *App) initialize() {
 		app.logger.Fatal(err)
 	}
 
-	app.db = dbInstance
+	app.db = dbDriver{db: dbInstance}
 	app.logger.Println("App correctly initialized!")
 }
 
@@ -105,7 +105,7 @@ func (app *App) Router() http.Handler {
 }
 
 func (app *App) DB() *sql.DB {
-	return app.db
+	return app.db.db
 }
 
 func (app *App) Port() string {
