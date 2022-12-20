@@ -28,15 +28,17 @@ type App struct {
 }
 
 // Variable representing the web app and its resources
-var app *App
+var neverRedApp *App
 
+// App constructor
 func New() (*App, error) {
-	app := &App{}
-	app.initialize()
+	neverRedApp := &App{}
+	neverRedApp.initialize()
 
-	return app, nil
+	return neverRedApp, nil
 }
 
+// initializes app
 func (app *App) initialize() {
 	// logger
 	app.logger = log.Default()
@@ -62,6 +64,7 @@ func (app *App) initialize() {
 	app.logger.Println("App correctly initialized!")
 }
 
+// initializes from the environment file
 func initAppEnv() (*neverRedEnv, error) {
 	cwd, _ := os.Getwd()
 	log.Printf("current directory is %s\n", cwd)
@@ -79,9 +82,9 @@ func initAppEnv() (*neverRedEnv, error) {
 
 func initAppRouter() http.Handler {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/import", app.dataImport)
-	mux.HandleFunc("/movements", app.getMovements)
-	mux.HandleFunc("/hello", app.hello)
+	mux.HandleFunc("/import", neverRedApp.dataImport)
+	mux.HandleFunc("/movements", neverRedApp.getMovements)
+	mux.HandleFunc("/hello", neverRedApp.hello)
 
 	return mux
 }
@@ -105,10 +108,6 @@ func initDb(env *neverRedEnv) (*sql.DB, error) {
 
 func (app *App) Router() http.Handler {
 	return app.router
-}
-
-func (app *App) DB() *sql.DB {
-	return app.db.driver
 }
 
 func (app *App) Port() string {
