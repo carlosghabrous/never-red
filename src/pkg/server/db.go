@@ -7,7 +7,7 @@ import (
 )
 
 type dbDriver struct {
-	db *sql.DB
+	driver *sql.DB
 }
 
 type DbQuerier interface {
@@ -15,12 +15,12 @@ type DbQuerier interface {
 	getMovement(id int) models.Movement
 }
 
-func (dbDriver) getAll() ([]models.Movement, error) {
+func (db dbDriver) getAll() ([]models.Movement, error) {
 	result := []models.Movement{}
 	return result, nil
 }
 
-func (dbDriver) getMovement(id int) (models.Movement, error) {
+func (db dbDriver) getMovement(id int) (models.Movement, error) {
 	result := models.Movement{}
 	return result, nil
 }

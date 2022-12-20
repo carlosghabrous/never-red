@@ -58,7 +58,7 @@ func (app *App) initialize() {
 		app.logger.Fatal(err)
 	}
 
-	app.db = dbDriver{db: dbInstance}
+	app.db = dbDriver{driver: dbInstance}
 	app.logger.Println("App correctly initialized!")
 }
 
@@ -97,7 +97,7 @@ func initDb(env *neverRedEnv) (*sql.DB, error) {
 
 	err = dbConn.Ping()
 	if err != nil {
-		return nil, fmt.Errorf("can't connect to DB %v\n", err)
+		return nil, fmt.Errorf("can't connect to DB %v", err)
 	}
 
 	return dbConn, nil
@@ -108,7 +108,7 @@ func (app *App) Router() http.Handler {
 }
 
 func (app *App) DB() *sql.DB {
-	return app.db.db
+	return app.db.driver
 }
 
 func (app *App) Port() string {
