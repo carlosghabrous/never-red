@@ -5,13 +5,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
-	"github.com/carlosghabrous/never-red/src/pkg/models"
 )
 
 const MaxFileBytesInMemory = 1024
 
-func (a *App) dataImport(w http.ResponseWriter, r *http.Request) {
+func (app *App) dataImport(w http.ResponseWriter, r *http.Request) {
 	if !validMethod(http.MethodPost, r.Method, w) {
 		return
 	}
@@ -34,13 +32,12 @@ func (a *App) dataImport(w http.ResponseWriter, r *http.Request) {
 	//TODO: parse file and dump content to DB
 }
 
-func (a *App) getMovements(w http.ResponseWriter, r *http.Request) {
+func (app *App) getMovements(w http.ResponseWriter, r *http.Request) {
 	if !validMethod(http.MethodGet, r.Method, w) {
 		return
 	}
 
-	movements := []models.Movement{} // this should come from the DB...
-	var err error = nil              // ...and the error as well
+	movements, err := app.db.getAll()
 
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
@@ -51,7 +48,7 @@ func (a *App) getMovements(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(movements)
 }
 
-func (a *App) hello(w http.ResponseWriter, r *http.Request) {
+func (app *App) hello(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode("hello")
 }
