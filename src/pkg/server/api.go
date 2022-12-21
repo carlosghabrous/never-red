@@ -22,7 +22,7 @@ type neverRedEnv struct {
 
 type App struct {
 	router http.Handler // interface
-	db     dbDriver
+	db     DbQuerier    // interface
 	logger *log.Logger
 	env    *neverRedEnv
 }
