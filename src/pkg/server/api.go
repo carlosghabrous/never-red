@@ -32,7 +32,7 @@ var neverRedApp *App
 
 // App constructor
 func New() (*App, error) {
-	neverRedApp := &App{}
+	neverRedApp = &App{}
 	neverRedApp.initialize()
 
 	return neverRedApp, nil
