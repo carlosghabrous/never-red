@@ -11,8 +11,8 @@ type dbDriver struct {
 }
 
 type DbQuerier interface {
-	getAll() []models.Movement
-	getMovement(id int) models.Movement
+	getAll() ([]models.Movement, error)
+	getMovement(id int) (models.Movement, error)
 }
 
 func (db dbDriver) getAll() ([]models.Movement, error) {
