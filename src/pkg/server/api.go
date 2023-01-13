@@ -84,7 +84,7 @@ func initAppRouter() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/import", neverRedApp.dataImport)
 	mux.HandleFunc("/movements", neverRedApp.getMovements)
-	mux.HandleFunc("/hello", neverRedApp.hello)
+	mux.HandleFunc("/movement", neverRedApp.getMovement)
 
 	return mux
 }

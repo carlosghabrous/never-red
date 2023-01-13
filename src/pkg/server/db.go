@@ -11,11 +11,11 @@ type dbDriver struct {
 }
 
 type DbQuerier interface {
-	getAll() ([]models.Movement, error)
+	getMovements() ([]models.Movement, error)
 	getMovement(id int) (models.Movement, error)
 }
 
-func (db dbDriver) getAll() ([]models.Movement, error) {
+func (db dbDriver) getMovements() ([]models.Movement, error) {
 	result := []models.Movement{}
 	return result, nil
 }

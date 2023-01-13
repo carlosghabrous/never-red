@@ -47,6 +47,28 @@ func TestGetMovements(t *testing.T) {
 	}
 }
 
+func TestGetMovement(t *testing.T) {
+	// TODO: how to pass parameters to the query?
+	// TODO: how to prepare the DB (aka, factories) for testing?
+	req, _ := http.NewRequest(http.MethodGet, "/movement", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	if respBody := response.Body.String(); respBody != "[]" {
+		t.Errorf("Expected empty array; got %s\n", respBody)
+	}
+}
+
+func TestGetNonExistingMovement(t *testing.T) {
+	req, _ := http.NewRequest(http.MethodGet, "/movement", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	if respBody := response.Body.String(); respBody != "" {
+		t.Errorf("Expected error message; got %s\n", respBody)
+	}
+}
+
 // TODO: maybe in a testing utils file
 func executeRequest(r *http.Request) (recorder *httptest.ResponseRecorder) {
 	reqRecorder := httptest.NewRecorder()

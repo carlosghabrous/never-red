@@ -37,7 +37,9 @@ func (app *App) getMovements(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	movements, err := app.db.getAll()
+	// TODO: extract filters from request
+
+	movements, err := app.db.getMovements()
 
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
@@ -46,6 +48,23 @@ func (app *App) getMovements(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(movements)
+}
+
+func (app *App) getMovement(w http.ResponseWriter, r *http.Request) {
+	if !validMethod(http.MethodGet, r.Method, w) {
+		return
+	}
+
+	// TODO: extract int from request
+	id := 1
+	movement, err := app.db.getMovement(id)
+	w.Header().Set("Content-Type", "application/json")
+	if err != nil {
+		fmt.Println("Something happened while fetching data")
+		return
+	}
+
+	json.NewEncoder(w).Encode(movement)
 }
 
 func (app *App) hello(w http.ResponseWriter, r *http.Request) {
