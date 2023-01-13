@@ -56,6 +56,7 @@ func (app *App) getMovement(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TODO: extract int from request
+	app.logger.Printf("query is %s", r.URL.Query())
 	id := 1
 	movement, err := app.db.getMovement(id)
 	w.Header().Set("Content-Type", "application/json")
@@ -65,9 +66,4 @@ func (app *App) getMovement(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(movement)
-}
-
-func (app *App) hello(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode("hello")
 }
