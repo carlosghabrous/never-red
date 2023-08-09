@@ -11,5 +11,6 @@ COPY .env .env
 COPY src/ ./src
 RUN go build -v -o . ./...
 
+# Expose port 8082
 EXPOSE 8082
 CMD ["./never-red"]
